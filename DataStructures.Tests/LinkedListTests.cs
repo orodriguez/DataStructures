@@ -10,7 +10,7 @@ public class LinkedListTests
     }
 
     [Fact]
-    public void Enumerate_1Element()
+    public void Enumerate_AfterAdd()
     {
         var list = new LinkedList<int> { 1 };
 
@@ -19,7 +19,7 @@ public class LinkedListTests
     }
 
     [Fact]
-    public void Enumerate_2Elements()
+    public void Enumerate_AfterAdd2()
     {
         var list = new LinkedList<int> { 1, 2 };
 
@@ -27,7 +27,7 @@ public class LinkedListTests
     }
 
     [Fact]
-    public void Enumerate_ManyElements()
+    public void Enumerate_AfterAddMany()
     {
         var list = new LinkedList<int> { 1, 2, 3, 4 };
 
@@ -45,7 +45,7 @@ public class LinkedListTests
     }
 
     [Fact]
-    public void Enumerate_AfterManyPrepend()
+    public void Enumerate_AfterPrependMany()
     {
         var list = new LinkedList<char> { 'D' };
 
