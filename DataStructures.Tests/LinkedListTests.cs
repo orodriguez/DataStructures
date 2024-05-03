@@ -1,16 +1,18 @@
+using System.Runtime.CompilerServices;
+
 namespace DataStructures.Tests;
 
 public class LinkedListTests
 {
     [Fact]
-    public void Enumerate_Empty()
+    public void Empty_Enumerate()
     {
         var list = new LinkedList<int>();
         Assert.Empty(list);
     }
 
     [Fact]
-    public void Enumerate_AfterAdd()
+    public void Add1_Enumerate()
     {
         var list = new LinkedList<int> { 1 };
 
@@ -19,7 +21,7 @@ public class LinkedListTests
     }
 
     [Fact]
-    public void Enumerate_AfterAdd2()
+    public void Add2_Enumerate()
     {
         var list = new LinkedList<int> { 1, 2 };
 
@@ -27,7 +29,7 @@ public class LinkedListTests
     }
 
     [Fact]
-    public void Enumerate_AfterAddMany()
+    public void Add4_Enumerate()
     {
         var list = new LinkedList<int> { 1, 2, 3, 4 };
 
@@ -35,7 +37,7 @@ public class LinkedListTests
     }
 
     [Fact]
-    public void Enumerate_AfterPrepend()
+    public void Add1_Prepend1_Enumerate()
     {
         var list = new LinkedList<string> { "B" };
 
@@ -45,7 +47,7 @@ public class LinkedListTests
     }
 
     [Fact]
-    public void Enumerate_AfterPrependMany()
+    public void Add1_Prepend3_Enumerate()
     {
         var list = new LinkedList<char> { 'D' };
 
@@ -57,7 +59,7 @@ public class LinkedListTests
     }
     
     [Fact]
-    public void Enumerate_AfterAddAndPrepend()
+    public void Add3_Prepend3_Enumerate()
     {
         var list = new LinkedList<char>
         {
@@ -74,11 +76,38 @@ public class LinkedListTests
     }
 
     [Fact]
-    public void Enumerate_AfterRemove_ValueNotFound()
+    public void Empty_RemoveNonExisting_Enumerate()
     {
         var list = new LinkedList<char>();
         
         Assert.False(list.Remove('A'));
         Assert.Empty(list);
+    }
+    
+    [Fact]
+    public void Add1_RemoveNonExisting_Enumerate()
+    {
+        var list = new LinkedList<char> { 'A' };
+        
+        Assert.False(list.Remove('B'));
+        Assert.Single(list);
+    }
+    
+    [Fact]
+    public void Add2_RemoveNonExisting_Enumerate()
+    {
+        var list = new LinkedList<char> { 'A', 'B' };
+        
+        Assert.False(list.Remove('C'));
+        Assert.Equal(new[] { 'A', 'B' }, list);
+    }
+    
+    [Fact]
+    public void Add4_RemoveNonExisting_Enumerate()
+    {
+        var list = new LinkedList<char> { 'A', 'B', 'C', 'D' };
+        
+        Assert.False(list.Remove('E'));
+        Assert.Equal(new[] { 'A', 'B', 'C', 'D' }, list);
     }
 }
