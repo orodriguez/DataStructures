@@ -64,8 +64,13 @@ public class LinkedList<T> : IEnumerable<T> where T : notnull
         public INode Add(T value) => 
             new LinkedNode(Value, new IsolatedNode(value));
 
-        public (INode node, bool removed) Remove(T value) => 
-            (this, false);
+        public (INode node, bool removed) Remove(T value)
+        {
+            if (Value.Equals(value))
+                return (new EmptyListHead(), true);
+            
+            return (this, false);
+        }
 
         public IEnumerable<T> Enumerate() => new[] { Value };
 
