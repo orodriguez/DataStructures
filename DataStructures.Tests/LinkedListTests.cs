@@ -55,4 +55,30 @@ public class LinkedListTests
 
         Assert.Equal(new[] { 'A', 'B', 'C', 'D' }, list);
     }
+    
+    [Fact]
+    public void Enumerate_AfterAddAndPrepend()
+    {
+        var list = new LinkedList<char>
+        {
+            'D',
+            'E',
+            'F'
+        };
+
+        list.Prepend('C');
+        list.Prepend('B');
+        list.Prepend('A');
+
+        Assert.Equal(new[] { 'A', 'B', 'C', 'D', 'E', 'F' }, list);
+    }
+
+    [Fact]
+    public void Enumerate_AfterRemove_ValueNotFound()
+    {
+        var list = new LinkedList<char>();
+        
+        Assert.False(list.Remove('A'));
+        Assert.Empty(list);
+    }
 }
