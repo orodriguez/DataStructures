@@ -31,7 +31,7 @@ public class LinkedList<T> : IEnumerable<T> where T : notnull
         bool ValueEquals(T value);
         INode Prepend(T value);
         public INode Add(T value);
-        (INode node, bool removed) Remove(T value);
+        (INode Node, bool Removed) Remove(T value);
         IEnumerable<T> Enumerate();
     }
     
@@ -43,7 +43,7 @@ public class LinkedList<T> : IEnumerable<T> where T : notnull
         
         public INode Add(T value) => new IsolatedNode(value);
         
-        public (INode node, bool removed) Remove(T value) => (this, false);
+        public (INode Node, bool Removed) Remove(T value) => (this, false);
 
         public IEnumerable<T> Enumerate() => new List<T>();
         
@@ -64,13 +64,8 @@ public class LinkedList<T> : IEnumerable<T> where T : notnull
         public INode Add(T value) => 
             new LinkedNode(Value, new IsolatedNode(value));
 
-        public (INode node, bool removed) Remove(T value)
-        {
-            if (Value.Equals(value))
-                return (new EmptyListHead(), true);
-            
-            return (this, false);
-        }
+        public (INode Node, bool Removed) Remove(T value) => 
+            Value.Equals(value) ? (new EmptyListHead(), true) : (this, false);
 
         public IEnumerable<T> Enumerate() => new[] { Value };
 
@@ -110,7 +105,7 @@ public class LinkedList<T> : IEnumerable<T> where T : notnull
             return this;
         }
 
-        public (INode node, bool removed) Remove(T value)
+        public (INode Node, bool Removed) Remove(T value)
         {
             if (ValueEquals(value))
                 return (Next, true);
