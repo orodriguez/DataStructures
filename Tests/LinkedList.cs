@@ -23,39 +23,56 @@ public class LinkedList<T> : IEnumerable<T>
         IEnumerable<T> Enumerate();
     }
 
+    private interface IValueNode : INode
+    {
+        T Value { get; }
+    }
+
     private record EmptyListHead : INode
     {
         public INode Add(T newValue) => new IsolatedNode(newValue);
         public IEnumerable<T> Enumerate() => new List<T>();
         public IEnumerator<T> GetEnumerator() => 
             new List<T>().GetEnumerator();
-
         IEnumerator IEnumerable.GetEnumerator() => 
             GetEnumerator();
     }
 
-    private record IsolatedNode(T Value) : INode
+    private record IsolatedNode(T Value) : IValueNode
     {
-        public INode Add(T newValue)
-        {
-            var firstNode = new FirstNode(Value, Next: new IsolatedNode(newValue));
-            return firstNode with { Next = new LastNode(newValue, Previous: firstNode)};
-        }
-
+        public INode Add(T newValue) => 
+            new LinkedNode(Value, new IsolatedNode(newValue));
         public IEnumerable<T> Enumerate() => new[] { Value };
-
+        public bool IsBeforeLast => false;
         public IEnumerator<T> GetEnumerator() => 
             new List<T> { Value }.GetEnumerator();
-
         IEnumerator IEnumerable.GetEnumerator() => 
             GetEnumerator();
     }
     
-    private record FirstNode(T Value, INode Next) : INode
+    private class LinkedNode : IValueNode
     {
+        public T Value { get; }
+        private INode Next { get; set; }
+        
+        public LinkedNode(T value, INode next)
+        {
+            Value = value;
+            Next = next;
+        }
+
         public INode Add(T newValue)
         {
-            throw new NotImplementedException();
+            var current = this;
+
+            while (current.Next is LinkedNode next) 
+                current = next;
+
+            var lastNode = (IsolatedNode) current.Next;
+            
+            current.Next = new LinkedNode(lastNode.Value, new IsolatedNode(newValue));
+            
+            return this;
         }
 
         public IEnumerator<T> GetEnumerator() => 
@@ -63,30 +80,8 @@ public class LinkedList<T> : IEnumerable<T>
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
+
         public IEnumerable<T> Enumerate() => 
             new[] { Value }.Concat(Next.Enumerate());
-    }
-    
-    private record LastNode(T Value, FirstNode Previous) : INode
-    {
-        public INode Add(T newValue)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<T> Enumerate()
-        {
-            yield return Value;
-        }
-
-        public IEnumerator<T> GetEnumerator()
-        {
-            throw new NotImplementedException();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
     }
 }
