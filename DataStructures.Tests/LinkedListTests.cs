@@ -1,4 +1,4 @@
-namespace Tests;
+namespace DataStructures.Tests;
 
 public class LinkedListTests
 {

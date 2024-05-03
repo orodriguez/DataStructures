@@ -1,6 +1,6 @@
 using System.Collections;
 
-namespace Tests;
+namespace DataStructures;
 
 public class LinkedList<T> : IEnumerable<T>
 {
@@ -75,13 +75,10 @@ public class LinkedList<T> : IEnumerable<T>
             return this;
         }
 
-        public IEnumerator<T> GetEnumerator() => 
-            Enumerate().GetEnumerator();
+        public IEnumerator<T> GetEnumerator() => Enumerate().GetEnumerator();
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-
-
-        public IEnumerable<T> Enumerate() => 
-            new[] { Value }.Concat(Next.Enumerate());
+        
+        public IEnumerable<T> Enumerate() => new[] { Value }.Concat(Next.Enumerate());
     }
 }
