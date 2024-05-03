@@ -83,6 +83,24 @@ public class LinkedListTests
         Assert.True(list.Remove('A'));
         Assert.Empty(list);
     }
+    
+    [Fact]
+    public void Add2_RemoveFirst_Enumerate()
+    {
+        var list = new LinkedList<char> { 'A', 'B' };
+        
+        Assert.True(list.Remove('A'));
+        Assert.Equal(new[] { 'B' }, list);
+    }
+    
+    [Fact]
+    public void Add2_RemoveSecond_Enumerate()
+    {
+        var list = new LinkedList<char> { 'A', 'B' };
+        
+        Assert.True(list.Remove('B'));
+        Assert.Equal(new[] { 'A' }, list);
+    }
 
     [Fact]
     public void Empty_RemoveNonExisting_Enumerate()
