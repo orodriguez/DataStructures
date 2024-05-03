@@ -25,12 +25,34 @@ public class LinkedListTests
 
         Assert.Equal(new[] { 1, 2 }, list);
     }
-    
+
     [Fact]
     public void Enumerate_ManyElements()
     {
         var list = new LinkedList<int> { 1, 2, 3, 4 };
 
         Assert.Equal(new[] { 1, 2, 3, 4 }, list);
+    }
+
+    [Fact]
+    public void Enumerate_AfterPrepend()
+    {
+        var list = new LinkedList<string> { "B" };
+
+        list.Prepend("A");
+
+        Assert.Equal(new[] { "A", "B" }, list);
+    }
+
+    [Fact]
+    public void Enumerate_AfterManyPrepend()
+    {
+        var list = new LinkedList<char> { 'D' };
+
+        list.Prepend('C');
+        list.Prepend('B');
+        list.Prepend('A');
+
+        Assert.Equal(new[] { 'A', 'B', 'C', 'D' }, list);
     }
 }
