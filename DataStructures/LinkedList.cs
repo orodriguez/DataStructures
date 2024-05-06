@@ -112,6 +112,9 @@ public class LinkedList<T> : IEnumerable<T> where T : notnull
 
             if (Next.ValueEquals(value) && Next is IsolatedNode)
                 return (new IsolatedNode(Value), true);
+
+            if (Next.ValueEquals(value) && Next is LinkedNode linked)
+                return (new LinkedNode(Value, linked.Next), true);
             
             return (this, false);
         }
