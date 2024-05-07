@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Linq.Expressions;
 
 namespace DataStructures;
 
@@ -9,6 +8,11 @@ public class LinkedList<T> : IEnumerable<T> where T : notnull
 
     public LinkedList() =>
         _head = new EmptyListHead();
+
+    public IEnumerator<T> GetEnumerator() => _head.GetEnumerator();
+
+    IEnumerator IEnumerable.GetEnumerator() =>
+        GetEnumerator();
 
     public void Prepend(T value) =>
         _head = _head.Prepend(value);
@@ -22,21 +26,13 @@ public class LinkedList<T> : IEnumerable<T> where T : notnull
         return removed;
     }
 
-    public IEnumerator<T> GetEnumerator() => _head.GetEnumerator();
-
-    IEnumerator IEnumerable.GetEnumerator() =>
-        GetEnumerator();
-
     private interface INode : IEnumerable<T>
     {
         bool ValueEquals(T value);
-        bool NextValueEquals(T value);
         INode Prepend(T value);
         public INode Add(T value);
         (INode Node, bool Removed) Remove(T value);
         IEnumerable<T> Enumerate();
-        T Value { get; }
-        bool IsLast { get; }
         INode Remove(LinkedNode previous);
         INode RemoveNext();
     }
@@ -45,11 +41,6 @@ public class LinkedList<T> : IEnumerable<T> where T : notnull
     {
         public bool ValueEquals(T value) => false;
 
-        public bool NextValueEquals(T value)
-        {
-            throw new NotImplementedException();
-        }
-
         public INode Prepend(T value) => new IsolatedNode(value);
 
         public INode Add(T value) => new IsolatedNode(value);
@@ -57,18 +48,10 @@ public class LinkedList<T> : IEnumerable<T> where T : notnull
         public (INode Node, bool Removed) Remove(T value) => (this, false);
 
         public IEnumerable<T> Enumerate() => new List<T>();
-        public T Value => throw new NotImplementedException();
-        public bool IsLast => true;
 
-        public INode Remove(LinkedNode previous)
-        {
-            throw new NotImplementedException();
-        }
+        public INode Remove(LinkedNode previous) => this;
 
-        public INode RemoveNext()
-        {
-            throw new NotImplementedException();
-        }
+        public INode RemoveNext() => this;
 
         public IEnumerator<T> GetEnumerator() =>
             new List<T>().GetEnumerator();
@@ -79,12 +62,8 @@ public class LinkedList<T> : IEnumerable<T> where T : notnull
 
     private record IsolatedNode(T Value) : INode
     {
+        public bool IsLast => true;
         public bool ValueEquals(T value) => Value.Equals(value);
-
-        public bool NextValueEquals(T value)
-        {
-            throw new NotImplementedException();
-        }
 
         public INode Prepend(T value) =>
             new LinkedNode(value, new IsolatedNode(Value));
@@ -96,12 +75,9 @@ public class LinkedList<T> : IEnumerable<T> where T : notnull
             Value.Equals(value) ? (new EmptyListHead(), true) : (this, false);
 
         public IEnumerable<T> Enumerate() => new[] { Value };
-        public bool IsLast => true;
 
-        public INode Remove(LinkedNode previous)
-        {
-            return new IsolatedNode(previous.Value);
-        }
+        public INode Remove(LinkedNode previous) =>
+            new IsolatedNode(previous.Value);
 
         public INode RemoveNext() => this;
 
@@ -114,27 +90,22 @@ public class LinkedList<T> : IEnumerable<T> where T : notnull
 
     private class LinkedNode : INode
     {
-        public T Value { get; }
-        public bool IsLast => false;
-
-        public INode Remove(LinkedNode previous) =>
-            new LinkedNode(previous.Value, Next);
-
-        public INode RemoveNext()
-        {
-            return Next.Remove(this);
-        }
-
-        private INode Next { get; set; }
-
         public LinkedNode(T value, INode next)
         {
             Value = value;
             Next = next;
         }
 
+        private INode Next { get; set; }
+        public T Value { get; }
+
+        public INode Remove(LinkedNode previous) =>
+            new LinkedNode(previous.Value, Next);
+
+        public INode RemoveNext() =>
+            Next.Remove(this);
+
         public bool ValueEquals(T value) => Value.Equals(value);
-        public bool NextValueEquals(T value) => Next.ValueEquals(value);
 
         public INode Prepend(T value) =>
             new LinkedNode(value, this);
@@ -166,12 +137,12 @@ public class LinkedList<T> : IEnumerable<T> where T : notnull
 
             while (current is LinkedNode linkedNode)
             {
-                if (current.NextValueEquals(value))
+                if (linkedNode.NextValueEquals(value))
                 {
                     previous.Next = current.RemoveNext();
                     return (this, true);
                 }
-                
+
                 current = linkedNode.Next;
                 previous = linkedNode;
             }
@@ -184,6 +155,8 @@ public class LinkedList<T> : IEnumerable<T> where T : notnull
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         public IEnumerable<T> Enumerate() => new[] { Value }.Concat(Next.Enumerate());
+
+        private bool NextValueEquals(T value) => Next.ValueEquals(value);
 
         public override string ToString() =>
             $"{nameof(LinkedNode)}({Value},{Next})";
