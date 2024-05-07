@@ -157,7 +157,7 @@ public class LinkedList<T> : IEnumerable<T> where T : notnull
 
                 var linkedCurrent = (LinkedNode)current;
                 
-                if (linkedCurrent.Next.ValueEquals(value))
+                if (current.NextValueEquals(value))
                 {
                     if (linkedCurrent.Next is IsolatedNode)
                     {
