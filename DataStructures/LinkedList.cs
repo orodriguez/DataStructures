@@ -62,7 +62,6 @@ public class LinkedList<T> : IEnumerable<T> where T : notnull
 
     private record IsolatedNode(T Value) : INode
     {
-        public bool IsLast => true;
         public bool ValueEquals(T value) => Value.Equals(value);
 
         public INode Prepend(T value) =>
