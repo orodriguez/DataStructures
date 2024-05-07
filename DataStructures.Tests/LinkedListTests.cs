@@ -1,5 +1,3 @@
-using System.Runtime.CompilerServices;
-
 namespace DataStructures.Tests;
 
 public class LinkedListTests
@@ -101,7 +99,7 @@ public class LinkedListTests
         Assert.True(list.Remove('X'));
         Assert.Equal(new[] { 'A' }, list);
     }
-    
+
     [Fact]
     public void Add3_RemoveFirst_Enumerate()
     {
@@ -110,7 +108,7 @@ public class LinkedListTests
         Assert.True(list.Remove('X'));
         Assert.Equal(new[] { 'A', 'B' }, list);
     }
-    
+
     [Fact]
     public void Add3_RemoveSecond_Enumerate()
     {
@@ -119,7 +117,7 @@ public class LinkedListTests
         Assert.True(list.Remove('X'));
         Assert.Equal(new[] { 'A', 'B' }, list);
     }
-    
+
     [Fact]
     public void Add3_RemoveLast_Enumerate()
     {
@@ -134,8 +132,8 @@ public class LinkedListTests
     {
         var list = new LinkedList<char>
         {
-            'X', 
-            'A', 
+            'X',
+            'A',
             'B',
             'C',
             'D'
@@ -150,8 +148,8 @@ public class LinkedListTests
     {
         var list = new LinkedList<char>
         {
-            'A', 
-            'B', 
+            'A',
+            'B',
             'X',
             'C',
             'D'
@@ -166,8 +164,8 @@ public class LinkedListTests
     {
         var list = new LinkedList<char>
         {
-            'A', 
-            'B', 
+            'A',
+            'B',
             'C',
             'D',
             'X'
