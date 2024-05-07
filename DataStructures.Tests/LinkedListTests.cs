@@ -78,54 +78,54 @@ public class LinkedListTests
     [Fact]
     public void Add1_Remove_Enumerate()
     {
-        var list = new LinkedList<char> { 'A' };
+        var list = new LinkedList<char> { 'X' };
 
-        Assert.True(list.Remove('A'));
+        Assert.True(list.Remove('X'));
         Assert.Empty(list);
     }
 
     [Fact]
     public void Add2_RemoveFirst_Enumerate()
     {
-        var list = new LinkedList<char> { 'A', 'B' };
+        var list = new LinkedList<char> { 'X', 'A' };
 
-        Assert.True(list.Remove('A'));
-        Assert.Equal(new[] { 'B' }, list);
+        Assert.True(list.Remove('X'));
+        Assert.Equal(new[] { 'A' }, list);
     }
 
     [Fact]
     public void Add2_RemoveSecond_Enumerate()
     {
-        var list = new LinkedList<char> { 'A', 'B' };
+        var list = new LinkedList<char> { 'A', 'X' };
 
-        Assert.True(list.Remove('B'));
+        Assert.True(list.Remove('X'));
         Assert.Equal(new[] { 'A' }, list);
     }
     
     [Fact]
     public void Add3_RemoveFirst_Enumerate()
     {
-        var list = new LinkedList<char> { 'A', 'B', 'C' };
+        var list = new LinkedList<char> { 'X', 'A', 'B' };
 
-        Assert.True(list.Remove('A'));
-        Assert.Equal(new[] { 'B', 'C' }, list);
+        Assert.True(list.Remove('X'));
+        Assert.Equal(new[] { 'A', 'B' }, list);
     }
     
     [Fact]
     public void Add3_RemoveSecond_Enumerate()
     {
-        var list = new LinkedList<char> { 'A', 'B', 'C' };
+        var list = new LinkedList<char> { 'A', 'X', 'B' };
 
-        Assert.True(list.Remove('B'));
-        Assert.Equal(new[] { 'A', 'C' }, list);
+        Assert.True(list.Remove('X'));
+        Assert.Equal(new[] { 'A', 'B' }, list);
     }
     
     [Fact]
     public void Add3_RemoveLast_Enumerate()
     {
-        var list = new LinkedList<char> { 'A', 'B', 'C' };
+        var list = new LinkedList<char> { 'A', 'B', 'X' };
 
-        Assert.True(list.Remove('C'));
+        Assert.True(list.Remove('X'));
         Assert.Equal(new[] { 'A', 'B' }, list);
     }
 
