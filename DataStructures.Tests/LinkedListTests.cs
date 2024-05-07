@@ -210,4 +210,16 @@ public class LinkedListTests
         Assert.False(list.Remove('X'));
         Assert.Equal(new[] { 'A', 'B', 'C', 'D' }, list);
     }
+
+    [Fact]
+    public void Add4_Remove4_Enumerate()
+    {
+        var list = new LinkedList<char> { 'A', 'B', 'C', 'D' };
+
+        Assert.True(list.Remove('B'));
+        Assert.True(list.Remove('A'));
+        Assert.True(list.Remove('C'));
+        Assert.True(list.Remove('D'));
+        Assert.Empty(list);
+    }
 }

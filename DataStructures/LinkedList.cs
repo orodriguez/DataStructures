@@ -7,7 +7,7 @@ public class LinkedList<T> : IEnumerable<T> where T : notnull
     private INode _head;
 
     public LinkedList() =>
-        _head = new EmptyListHead();
+        _head = new EmptyNode();
 
     public IEnumerator<T> GetEnumerator() => _head.GetEnumerator();
 
@@ -37,7 +37,7 @@ public class LinkedList<T> : IEnumerable<T> where T : notnull
         INode RemoveNext();
     }
 
-    private record EmptyListHead : INode
+    private record EmptyNode : INode
     {
         public bool ValueEquals(T value) => false;
 
@@ -71,7 +71,7 @@ public class LinkedList<T> : IEnumerable<T> where T : notnull
             new LinkedNode(Value, new IsolatedNode(value));
 
         public (INode Node, bool Removed) Remove(T value) =>
-            Value.Equals(value) ? (new EmptyListHead(), true) : (this, false);
+            Value.Equals(value) ? (new EmptyNode(), true) : (this, false);
 
         public IEnumerable<T> Enumerate() => new[] { Value };
 
