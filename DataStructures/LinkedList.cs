@@ -116,10 +116,8 @@ public class LinkedList<T> : IEnumerable<T> where T : notnull
 
             while (current.Next is LinkedNode next)
                 current = next;
-
-            var lastNode = (IsolatedNode)current.Next;
-
-            current.Next = new LinkedNode(lastNode.Value, new IsolatedNode(value));
+            
+            current.Next = current.Next.Add(value);
 
             return this;
         }
