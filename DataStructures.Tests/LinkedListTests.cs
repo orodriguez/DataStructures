@@ -136,13 +136,29 @@ public class LinkedListTests
         {
             'A', 
             'B', 
+            'X',
             'C',
-            'E',
-            'F'
+            'D'
         };
 
-        Assert.True(list.Remove('C'));
-        Assert.Equal(new[] { 'A', 'B', 'E', 'F' }, list);
+        Assert.True(list.Remove('X'));
+        Assert.Equal(new[] { 'A', 'B', 'C', 'D' }, list);
+    }
+    
+    [Fact]
+    public void Add5_RemoveLast_Enumerate()
+    {
+        var list = new LinkedList<char>
+        {
+            'A', 
+            'B', 
+            'C',
+            'D',
+            'X'
+        };
+
+        Assert.True(list.Remove('X'));
+        Assert.Equal(new[] { 'A', 'B', 'C', 'D' }, list);
     }
 
     [Fact]
