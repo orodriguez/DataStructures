@@ -117,7 +117,7 @@ public class LinkedList<T> : IEnumerable<T> where T : notnull
         public T Value { get; }
         public bool IsLast => false;
 
-        public INode Remove(LinkedNode previous) => 
+        public INode Remove(LinkedNode previous) =>
             new LinkedNode(previous.Value, Next);
 
         public INode RemoveNext()
@@ -169,20 +169,11 @@ public class LinkedList<T> : IEnumerable<T> where T : notnull
                 if (current.IsLast) return (this, false);
 
                 var linkedCurrent = (LinkedNode)current;
-                
+
                 if (current.NextValueEquals(value))
                 {
-                    if (linkedCurrent.Next is IsolatedNode)
-                    {
-                        previous.Next = current.RemoveNext();
-                        return (this, true);
-                    }
-
-                    if (linkedCurrent.Next is LinkedNode linkedNext)
-                    {
-                        previous.Next = new LinkedNode(linkedCurrent.Value, linkedNext.Next);
-                        return (this, true);
-                    }
+                    previous.Next = current.RemoveNext();
+                    return (this, true);
                 }
 
                 if (current.ValueEquals(value))
