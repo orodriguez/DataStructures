@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Linq.Expressions;
 
 namespace DataStructures;
 
@@ -35,6 +36,8 @@ public class LinkedList<T> : IEnumerable<T> where T : notnull
         (INode Node, bool Removed) Remove(T value);
         IEnumerable<T> Enumerate();
         T Value { get; }
+        bool IsLast { get; }
+        INode Remove(LinkedNode previous);
     }
 
     private record EmptyListHead : INode
@@ -54,6 +57,12 @@ public class LinkedList<T> : IEnumerable<T> where T : notnull
 
         public IEnumerable<T> Enumerate() => new List<T>();
         public T Value => throw new NotImplementedException();
+        public bool IsLast => true;
+
+        public INode Remove(LinkedNode previous)
+        {
+            throw new NotImplementedException();
+        }
 
         public IEnumerator<T> GetEnumerator() =>
             new List<T>().GetEnumerator();
@@ -81,6 +90,12 @@ public class LinkedList<T> : IEnumerable<T> where T : notnull
             Value.Equals(value) ? (new EmptyListHead(), true) : (this, false);
 
         public IEnumerable<T> Enumerate() => new[] { Value };
+        public bool IsLast => true;
+
+        public INode Remove(LinkedNode previous)
+        {
+            return new IsolatedNode(previous.Value);
+        }
 
         public IEnumerator<T> GetEnumerator() =>
             new List<T> { Value }.GetEnumerator();
@@ -92,6 +107,11 @@ public class LinkedList<T> : IEnumerable<T> where T : notnull
     private class LinkedNode : INode
     {
         public T Value { get; }
+        public bool IsLast => false;
+
+        public INode Remove(LinkedNode previous) => 
+            new LinkedNode(previous.Value, Next);
+
         private INode Next { get; set; }
 
         public LinkedNode(T value, INode next)
@@ -125,18 +145,17 @@ public class LinkedList<T> : IEnumerable<T> where T : notnull
             if (ValueEquals(value))
                 return (Next, true);
 
-            if (Next.ValueEquals(value) && Next is IsolatedNode)
-                return (new IsolatedNode(Value), true);
-
-            if (Next.ValueEquals(value) && Next is LinkedNode linked)
-                return (new LinkedNode(Value, linked.Next), true);
+            if (Next.ValueEquals(value))
+                return (Next.Remove(this), true);
 
             var previous = this;
             var current = this.Next;
 
             while (true)
             {
-                if (current is not LinkedNode linkedCurrent) return (this, false);
+                if (current.IsLast) return (this, false);
+
+                var linkedCurrent = (LinkedNode)current;
                 
                 if (linkedCurrent.Next.ValueEquals(value))
                 {
@@ -161,8 +180,6 @@ public class LinkedList<T> : IEnumerable<T> where T : notnull
 
                 current = linkedCurrent.Next;
                 previous = linkedCurrent;
-                continue;
-
             }
         }
 
