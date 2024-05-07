@@ -164,27 +164,19 @@ public class LinkedList<T> : IEnumerable<T> where T : notnull
             var previous = this;
             var current = Next;
 
-            while (true)
+            while (current is LinkedNode linkedNode)
             {
-                if (current.IsLast) return (this, false);
-
-                var linkedCurrent = (LinkedNode)current;
-
                 if (current.NextValueEquals(value))
                 {
                     previous.Next = current.RemoveNext();
                     return (this, true);
                 }
-
-                if (current.ValueEquals(value))
-                {
-                    previous.Next = new LinkedNode(previous.Value, linkedCurrent.Next);
-                    return (this, true);
-                }
-
-                current = linkedCurrent.Next;
-                previous = linkedCurrent;
+                
+                current = linkedNode.Next;
+                previous = linkedNode;
             }
+
+            return (this, false);
         }
 
         public IEnumerator<T> GetEnumerator() => Enumerate().GetEnumerator();
