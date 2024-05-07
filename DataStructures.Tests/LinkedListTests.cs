@@ -191,7 +191,7 @@ public class LinkedListTests
     {
         var list = new LinkedList<char> { 'A' };
 
-        Assert.False(list.Remove('B'));
+        Assert.False(list.Remove('X'));
         Assert.Single(list);
     }
 
@@ -200,7 +200,7 @@ public class LinkedListTests
     {
         var list = new LinkedList<char> { 'A', 'B' };
 
-        Assert.False(list.Remove('C'));
+        Assert.False(list.Remove('X'));
         Assert.Equal(new[] { 'A', 'B' }, list);
     }
 
@@ -209,7 +209,7 @@ public class LinkedListTests
     {
         var list = new LinkedList<char> { 'A', 'B', 'C', 'D' };
 
-        Assert.False(list.Remove('E'));
+        Assert.False(list.Remove('X'));
         Assert.Equal(new[] { 'A', 'B', 'C', 'D' }, list);
     }
 }
