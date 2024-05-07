@@ -106,16 +106,14 @@ public class LinkedList<T> : IEnumerable<T> where T : notnull
 
         public bool ValueEquals(T value) => Value.Equals(value);
 
-        public INode Prepend(T value) =>
-            new LinkedNode(value, this);
+        public INode Prepend(T value) => new LinkedNode(value, this);
 
         public INode Add(T value)
         {
             var current = this;
 
-            while (current.Next is LinkedNode next)
-                current = next;
-            
+            while (current.Next is LinkedNode next) current = next;
+
             current.Next = current.Next.Add(value);
 
             return this;
