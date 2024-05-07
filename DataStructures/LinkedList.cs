@@ -38,6 +38,7 @@ public class LinkedList<T> : IEnumerable<T> where T : notnull
         T Value { get; }
         bool IsLast { get; }
         INode Remove(LinkedNode previous);
+        INode RemoveNext();
     }
 
     private record EmptyListHead : INode
@@ -60,6 +61,11 @@ public class LinkedList<T> : IEnumerable<T> where T : notnull
         public bool IsLast => true;
 
         public INode Remove(LinkedNode previous)
+        {
+            throw new NotImplementedException();
+        }
+
+        public INode RemoveNext()
         {
             throw new NotImplementedException();
         }
@@ -97,6 +103,8 @@ public class LinkedList<T> : IEnumerable<T> where T : notnull
             return new IsolatedNode(previous.Value);
         }
 
+        public INode RemoveNext() => this;
+
         public IEnumerator<T> GetEnumerator() =>
             new List<T> { Value }.GetEnumerator();
 
@@ -111,6 +119,11 @@ public class LinkedList<T> : IEnumerable<T> where T : notnull
 
         public INode Remove(LinkedNode previous) => 
             new LinkedNode(previous.Value, Next);
+
+        public INode RemoveNext()
+        {
+            return Next.Remove(this);
+        }
 
         private INode Next { get; set; }
 
@@ -149,7 +162,7 @@ public class LinkedList<T> : IEnumerable<T> where T : notnull
                 return (Next.Remove(this), true);
 
             var previous = this;
-            var current = this.Next;
+            var current = Next;
 
             while (true)
             {
@@ -161,7 +174,7 @@ public class LinkedList<T> : IEnumerable<T> where T : notnull
                 {
                     if (linkedCurrent.Next is IsolatedNode)
                     {
-                        previous.Next = new IsolatedNode(linkedCurrent.Value);
+                        previous.Next = current.RemoveNext();
                         return (this, true);
                     }
 
