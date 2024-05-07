@@ -219,6 +219,7 @@ public class LinkedListTests
         Assert.True(list.Remove('B'));
         Assert.True(list.Remove('A'));
         Assert.True(list.Remove('C'));
+        Assert.Single(list);
         Assert.True(list.Remove('D'));
         Assert.Empty(list);
     }
