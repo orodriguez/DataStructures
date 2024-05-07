@@ -145,6 +145,12 @@ public class LinkedList<T> : IEnumerable<T> where T : notnull
                         previous.Next = new IsolatedNode(linkedCurrent.Value);
                         return (this, true);
                     }
+
+                    if (linkedCurrent.Next is LinkedNode linkedNext)
+                    {
+                        previous.Next = new LinkedNode(linkedCurrent.Value, linkedNext.Next);
+                        return (this, true);
+                    }
                 }
 
                 if (current.ValueEquals(value))
