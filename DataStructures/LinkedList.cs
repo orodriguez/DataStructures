@@ -131,17 +131,17 @@ public class LinkedList<T> : IEnumerable<T> where T : notnull
             if (Next.ValueEquals(value))
                 return (Next.Remove(this), true);
 
-            var previous = this;
-
-            foreach (var linkedNode in Next.OfType<LinkedNode>())
+            foreach (var node in this.OfType<LinkedNode>())
             {
-                if (linkedNode.NextValueEquals(value))
-                {
-                    previous.RemoveNextFromNext();
-                    return (this, true);
-                }
+                var target = node.Skip(2).FirstOrDefault();
 
-                previous = linkedNode;
+                if (target == null)
+                    return (this, false);
+
+                if (!target.ValueEquals(value)) continue;
+
+                node.RemoveNextFromNext();
+                return (this, true);
             }
 
             return (this, false);
