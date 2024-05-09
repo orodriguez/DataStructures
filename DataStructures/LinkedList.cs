@@ -9,7 +9,8 @@ public class LinkedList<T> : IEnumerable<T> where T : notnull
     public LinkedList() =>
         _head = new EmptyNode();
 
-    public IEnumerator<T> GetEnumerator() => _head.GetEnumerator();
+    public IEnumerator<T> GetEnumerator() =>
+        _head.EnumerateValues().GetEnumerator();
 
     IEnumerator IEnumerable.GetEnumerator() =>
         GetEnumerator();
@@ -26,13 +27,14 @@ public class LinkedList<T> : IEnumerable<T> where T : notnull
         return removed;
     }
 
-    private interface INode : IEnumerable<T>
+    private interface INode : IEnumerable<INode>
     {
         bool ValueEquals(T value);
         INode Prepend(T value);
         public INode Add(T value);
         (INode Node, bool Removed) Remove(T value);
-        IEnumerable<T> Enumerate();
+        IEnumerable<T> EnumerateValues();
+        IEnumerable<INode> Enumerate();
         INode Remove(LinkedNode previous);
         INode RemoveNext();
     }
@@ -47,17 +49,19 @@ public class LinkedList<T> : IEnumerable<T> where T : notnull
 
         public (INode Node, bool Removed) Remove(T value) => (this, false);
 
-        public IEnumerable<T> Enumerate() => new List<T>();
+        public IEnumerable<T> EnumerateValues() => Array.Empty<T>();
 
         public INode Remove(LinkedNode previous) => this;
 
         public INode RemoveNext() => this;
 
-        public IEnumerator<T> GetEnumerator() =>
-            new List<T>().GetEnumerator();
-
         IEnumerator IEnumerable.GetEnumerator() =>
             GetEnumerator();
+
+        public IEnumerator<INode> GetEnumerator() =>
+            new List<INode>().GetEnumerator();
+
+        public IEnumerable<INode> Enumerate() => new List<INode>();
     }
 
     private record IsolatedNode(T Value) : INode
@@ -65,7 +69,7 @@ public class LinkedList<T> : IEnumerable<T> where T : notnull
         public bool ValueEquals(T value) => Value.Equals(value);
 
         public INode Prepend(T value) =>
-            new LinkedNode(value, new IsolatedNode(Value));
+            new LinkedNode(value, this);
 
         public INode Add(T value) =>
             new LinkedNode(Value, new IsolatedNode(value));
@@ -73,18 +77,20 @@ public class LinkedList<T> : IEnumerable<T> where T : notnull
         public (INode Node, bool Removed) Remove(T value) =>
             Value.Equals(value) ? (new EmptyNode(), true) : (this, false);
 
-        public IEnumerable<T> Enumerate() => new[] { Value };
+        public IEnumerable<T> EnumerateValues() => new[] { Value };
 
         public INode Remove(LinkedNode previous) =>
             new IsolatedNode(previous.Value);
 
         public INode RemoveNext() => this;
 
-        public IEnumerator<T> GetEnumerator() =>
-            new List<T> { Value }.GetEnumerator();
-
         IEnumerator IEnumerable.GetEnumerator() =>
             GetEnumerator();
+
+        public IEnumerator<INode> GetEnumerator() =>
+            new List<INode> { this }.GetEnumerator();
+
+        public IEnumerable<INode> Enumerate() => new[] { this };
     }
 
     private class LinkedNode : INode
@@ -110,11 +116,9 @@ public class LinkedList<T> : IEnumerable<T> where T : notnull
 
         public INode Add(T value)
         {
-            var current = this;
-
-            while (current.Next is LinkedNode next) current = next;
-
-            current.Next = current.Next.Add(value);
+            this.OfType<LinkedNode>()
+                .Last()
+                .AddToNext(value);
 
             return this;
         }
@@ -145,11 +149,32 @@ public class LinkedList<T> : IEnumerable<T> where T : notnull
             return (this, false);
         }
 
-        public IEnumerator<T> GetEnumerator() => Enumerate().GetEnumerator();
+        public IEnumerable<T> EnumerateValues()
+        {
+            INode current = this;
+            while (true)
+            {
+                if (current is LinkedNode linkedNode)
+                {
+                    yield return linkedNode.Value;
+                    current = linkedNode.Next;
+                }
+
+                if (current is IsolatedNode isolated)
+                {
+                    yield return isolated.Value;
+                    break;
+                }
+            }
+        }
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-        public IEnumerable<T> Enumerate() => new[] { Value }.Concat(Next.Enumerate());
+        public IEnumerator<INode> GetEnumerator() => Enumerate().GetEnumerator();
+
+        public IEnumerable<INode> Enumerate() => new[] { this }.Concat(Next.Enumerate());
+
+        private void AddToNext(T value) => Next = Next.Add(value);
 
         private bool NextValueEquals(T value) => Next.ValueEquals(value);
 
