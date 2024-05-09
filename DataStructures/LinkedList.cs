@@ -132,17 +132,15 @@ public class LinkedList<T> : IEnumerable<T> where T : notnull
                 return (Next.Remove(this), true);
 
             var previous = this;
-            var current = Next;
 
-            while (current is LinkedNode linkedNode)
+            foreach (var linkedNode in Next.OfType<LinkedNode>())
             {
                 if (linkedNode.NextValueEquals(value))
                 {
-                    previous.Next = current.RemoveNext();
+                    previous.RemoveNextFromNext();
                     return (this, true);
                 }
 
-                current = linkedNode.Next;
                 previous = linkedNode;
             }
 
@@ -173,6 +171,8 @@ public class LinkedList<T> : IEnumerable<T> where T : notnull
         public IEnumerator<INode> GetEnumerator() => Enumerate().GetEnumerator();
 
         public IEnumerable<INode> Enumerate() => new[] { this }.Concat(Next.Enumerate());
+
+        private void RemoveNextFromNext() => Next = Next.RemoveNext();
 
         private void AddToNext(T value) => Next = Next.Add(value);
 
