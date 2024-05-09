@@ -133,7 +133,7 @@ public class LinkedList<T> : IEnumerable<T> where T : notnull
 
             foreach (var node in this.OfType<LinkedNode>())
             {
-                var target = node.Skip(2).FirstOrDefault();
+                var target = node.ElementAtOrDefault(2);
 
                 if (target == null)
                     return (this, false);
