@@ -37,9 +37,7 @@ public class LinkedListTests
     [Fact]
     public void Add1_Prepend1_Enumerate()
     {
-        var list = LinkedList.From("B");
-
-        list.Prepend("A");
+        var list = LinkedList.From("B").Prepend("A");
 
         Assert.Equal(new[] { "A", "B" }, list);
     }
@@ -47,11 +45,10 @@ public class LinkedListTests
     [Fact]
     public void Add1_Prepend3_Enumerate()
     {
-        var list = LinkedList.From('D');
-
-        list.Prepend('C');
-        list.Prepend('B');
-        list.Prepend('A');
+        var list = LinkedList.From('D')
+            .Prepend('C')
+            .Prepend('B')
+            .Prepend('A');
 
         Assert.Equal(new[] { 'A', 'B', 'C', 'D' }, list);
     }
@@ -59,11 +56,10 @@ public class LinkedListTests
     [Fact]
     public void Add3_Prepend3_Enumerate()
     {
-        var list = LinkedList.From('D', 'E', 'F');
-
-        list.Prepend('C');
-        list.Prepend('B');
-        list.Prepend('A');
+        var list = LinkedList.From('D', 'E', 'F')
+            .Prepend('C')
+            .Prepend('B')
+            .Prepend('A');
 
         Assert.Equal(new[] { 'A', 'B', 'C', 'D', 'E', 'F' }, list);
     }

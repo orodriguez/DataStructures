@@ -27,8 +27,11 @@ public class LinkedList<T> : ILinkedList<T> where T : notnull
     IEnumerator IEnumerable.GetEnumerator() =>
         GetEnumerator();
 
-    public void Prepend(T value) =>
+    public ILinkedList<T> Prepend(T value)
+    {
         _head = _head.Prepend(value);
+        return this;
+    }
 
     public void Add(T value) =>
         _head = _head.Add(value);
