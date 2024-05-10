@@ -6,12 +6,8 @@ public static class LinkedList
 {
     public static ILinkedList<T> Empty<T>() where T : notnull => new LinkedList<T>();
 
-    public static ILinkedList<T> From<T>(params T[] values) where T : notnull
-    {
-        var list = Empty<T>();
-        foreach (var value in values) list.Add(value);
-        return list;
-    }
+    public static ILinkedList<T> From<T>(params T[] values) where T : notnull =>
+        values.Aggregate(Empty<T>(), (list, value) => list.Add(value));
 }
 
 public class LinkedList<T> : ILinkedList<T> where T : notnull
@@ -33,8 +29,11 @@ public class LinkedList<T> : ILinkedList<T> where T : notnull
         return this;
     }
 
-    public void Add(T value) =>
+    public ILinkedList<T> Add(T value)
+    {
         _head = _head.Add(value);
+        return this;
+    }
 
     public bool Remove(T value)
     {
