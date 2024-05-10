@@ -35,10 +35,10 @@ public class LinkedList<T> : ILinkedList<T> where T : notnull
         return this;
     }
 
-    public bool Remove(T value)
+    public ILinkedList<T> Remove(T value)
     {
         (_head, var removed) = _head.Remove(value);
-        return removed;
+        return this;
     }
 
     private interface INode : IEnumerable<INode>

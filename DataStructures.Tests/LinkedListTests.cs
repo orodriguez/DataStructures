@@ -67,130 +67,128 @@ public class LinkedListTests
     [Fact]
     public void Add1_Remove_Enumerate()
     {
-        var list = LinkedList.From('X');
+        var list = LinkedList.From('X')
+            .Remove('X');
 
-        Assert.True(list.Remove('X'));
         Assert.Empty(list);
     }
 
     [Fact]
     public void Add2_RemoveFirst_Enumerate()
     {
-        var list = LinkedList.From('X', 'A');
+        var list = LinkedList.From('X', 'A')
+            .Remove('X');
 
-        Assert.True(list.Remove('X'));
         Assert.Equal(new[] { 'A' }, list);
     }
 
     [Fact]
     public void Add2_RemoveSecond_Enumerate()
     {
-        var list = LinkedList.From('A', 'X');
+        var list = LinkedList.From('A', 'X')
+            .Remove('X');
 
-        Assert.True(list.Remove('X'));
         Assert.Equal(new[] { 'A' }, list);
     }
 
     [Fact]
     public void Add3_RemoveFirst_Enumerate()
     {
-        var list = LinkedList.From('X', 'A', 'B');
+        var list = LinkedList.From('X', 'A', 'B')
+            .Remove('X');
 
-        Assert.True(list.Remove('X'));
         Assert.Equal(new[] { 'A', 'B' }, list);
     }
 
     [Fact]
     public void Add3_RemoveSecond_Enumerate()
     {
-        var list = LinkedList.From('A', 'X', 'B');
+        var list = LinkedList.From('A', 'X', 'B')
+            .Remove('X');
 
-        Assert.True(list.Remove('X'));
         Assert.Equal(new[] { 'A', 'B' }, list);
     }
 
     [Fact]
     public void Add3_RemoveLast_Enumerate()
     {
-        var list = LinkedList.From('A', 'B', 'X');
+        var list = LinkedList.From('A', 'B', 'X')
+            .Remove('X');
 
-        Assert.True(list.Remove('X'));
         Assert.Equal(new[] { 'A', 'B' }, list);
     }
 
     [Fact]
     public void Add5_RemoveFirst_Enumerate()
     {
-        var list = LinkedList.From('X', 'A', 'B', 'C', 'D');
+        var list = LinkedList.From('X', 'A', 'B', 'C', 'D')
+            .Remove('X');
 
-        Assert.True(list.Remove('X'));
         Assert.Equal(new[] { 'A', 'B', 'C', 'D' }, list);
     }
 
     [Fact]
     public void Add5_RemoveMiddle_Enumerate()
     {
-        var list = LinkedList.From('A', 'B', 'X', 'C', 'D');
+        var list = LinkedList.From('A', 'B', 'X', 'C', 'D')
+            .Remove('X');
 
-        Assert.True(list.Remove('X'));
         Assert.Equal(new[] { 'A', 'B', 'C', 'D' }, list);
     }
 
     [Fact]
     public void Add5_RemoveLast_Enumerate()
     {
-        var list = LinkedList.From('A', 'B', 'C', 'D', 'X');
+        var list = LinkedList.From('A', 'B', 'C', 'D', 'X')
+            .Remove('X');
 
-        Assert.True(list.Remove('X'));
         Assert.Equal(new[] { 'A', 'B', 'C', 'D' }, list);
     }
 
     [Fact]
     public void Empty_RemoveNonExisting_Enumerate()
     {
-        var list = LinkedList.Empty<char>();
+        var list = LinkedList.Empty<char>().Remove('X');
 
-        Assert.False(list.Remove('A'));
         Assert.Empty(list);
     }
 
     [Fact]
     public void Add1_RemoveNonExisting_Enumerate()
     {
-        var list = LinkedList.From('A');
+        var list = LinkedList.From('A')
+            .Remove('X');
 
-        Assert.False(list.Remove('X'));
         Assert.Single(list);
     }
 
     [Fact]
     public void Add2_RemoveNonExisting_Enumerate()
     {
-        var list = LinkedList.From('A', 'B');
+        var list = LinkedList.From('A', 'B')
+            .Remove('X');
 
-        Assert.False(list.Remove('X'));
         Assert.Equal(new[] { 'A', 'B' }, list);
     }
 
     [Fact]
     public void Add4_RemoveNonExisting_Enumerate()
     {
-        var list = LinkedList.From('A', 'B', 'C', 'D');
+        var list = LinkedList.From('A', 'B', 'C', 'D')
+            .Remove('X');
 
-        Assert.False(list.Remove('X'));
         Assert.Equal(new[] { 'A', 'B', 'C', 'D' }, list);
     }
 
     [Fact]
     public void Add4_Remove4_Enumerate()
     {
-        var list = LinkedList.From('A', 'B', 'C', 'D');
+        var list = LinkedList.From('A', 'B', 'C', 'D')
+            .Remove('B')
+            .Remove('A')
+            .Remove('C')
+            .Remove('D');
 
-        Assert.True(list.Remove('B'));
-        Assert.True(list.Remove('A'));
-        Assert.True(list.Remove('C'));
-        Assert.Single(list);
-        Assert.True(list.Remove('D'));
         Assert.Empty(list);
     }
 }
