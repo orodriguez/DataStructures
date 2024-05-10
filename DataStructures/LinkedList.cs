@@ -2,7 +2,19 @@ using System.Collections;
 
 namespace DataStructures;
 
-public class LinkedList<T> : IEnumerable<T> where T : notnull
+public static class LinkedList
+{
+    public static ILinkedList<T> Empty<T>() where T : notnull => new LinkedList<T>();
+
+    public static ILinkedList<T> From<T>(params T[] values) where T : notnull
+    {
+        var list = Empty<T>();
+        foreach (var value in values) list.Add(value);
+        return list;
+    }
+}
+
+public class LinkedList<T> : ILinkedList<T> where T : notnull
 {
     private INode _head;
 
